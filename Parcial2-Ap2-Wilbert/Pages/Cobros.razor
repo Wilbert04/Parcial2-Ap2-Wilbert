@@ -1,0 +1,78 @@
+﻿@page "/Cobros"
+@page "/Cobros/{IdCobros:int}"
+
+<EditForm Model="Cobro" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
+    <div class="card">
+        <div class="card-header">
+            <h3>Registro de Cobros</h3>
+        </div>
+
+        <div class="card-body">
+            <form>
+                @*CobrosId*@
+                <div class="form-row align-items-center">
+                    <div class="col">
+                        <div class="form-group">
+                            <label>CobroId</label>
+                            <div class="input-group">
+                                <InputNumber @bind-Value="Cobro.IdCobros" class="form-control col-4" />
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @*Fecha*@
+                <div class="form-group col-5" style="float:right;">
+                    <label>Fecha</label>
+                    <div class="input-group">
+                        <InputDate @bind-Value="Cobro.Fecha" class="form-control" />
+                        <ValidationMessage For="@(() => Cobro.Fecha)" />
+                    </div>
+                </div>
+
+                @*ClienteId*@
+                <div class="form-group">
+                    <label>ClienteId</label>
+                    <div class="input-group">
+                        <InputNumber @bind-Value="Cobro.ClienteId" class="form-control col-6" />
+                    </div>
+                </div>
+
+                @*Detalle*@
+                <table class="table">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">Id</th>
+                            <th scope="col">Fecha</th>
+                            <th scope="col">Monto</th>
+                            <th scope="col">Balance</th>
+                            <th scope="col">Cobrado</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Cobro.CostosDetalle)
+                        {
+                            <tr>
+                                <td>@item.</td>
+                                <td>@item.Telefono</td>
+                            </tr>
+                        }
+
+                    </tbody>
+                </table>
+
+
+            </form>
+        </div>
+
+    </div>
+</EditForm>
+
+<h3>Cobros</h3>
+
+@code {
+
+}
