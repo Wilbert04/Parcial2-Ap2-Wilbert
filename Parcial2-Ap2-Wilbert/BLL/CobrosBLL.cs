@@ -11,12 +11,9 @@ namespace Parcial2_Ap2_Wilbert.BLL
 {
     public class CobrosBLL
     {
-        public static bool Guardar(Cobros cobros)
+        public static bool Guardar(Cobros cobro)
         {
-            if (!Existe(cobros.IdCobros))
-                return Insertar(cobros);
-            else
-                return Modificar(cobros);
+            return Insertar(cobro);
         }
 
         private static bool Insertar(Cobros cobros)
@@ -26,37 +23,14 @@ namespace Parcial2_Ap2_Wilbert.BLL
 
             try
             {
-
-                contexto.Cobros.Add(cobros);
-                paso = contexto.SaveChanges() > 0;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            finally
-            {
-                contexto.Dispose();
-            }
-
-            return paso;
-        }
-
-        public static bool Modificar(Cobros cobros)
-        {
-            bool paso = false;
-            Contexto contexto = new Contexto();
-
-            try
-            {
-                contexto.Database.ExecuteSqlRaw($"Delete FROM CobrosDetalle Where CobroId = {cobros.IdCobros}");
-
                 foreach (var item in cobros.cobrosDetalle)
                 {
-                    contexto.Entry(item).State = EntityState.Added;
+                    item.Venta = contexto.Ventas.Find(item.VentaId);
+                    item.Venta.Balance -= item.Cobrado;
+                    contexto.Entry(item.Venta).State = EntityState.Modified;
                 }
-                contexto.Entry(cobros).State = EntityState.Modified;
-                paso = contexto.SaveChanges() > 0;
+                contexto.Cobros.Add(cobros);
+                paso = (contexto.SaveChanges() > 0);
             }
             catch (Exception)
             {
@@ -66,22 +40,21 @@ namespace Parcial2_Ap2_Wilbert.BLL
             {
                 contexto.Dispose();
             }
+
             return paso;
         }
 
+        
         public static bool Eliminar(int id)
         {
             bool paso = false;
             Contexto contexto = new Contexto();
             try
             {
-                var cobros = contexto.Cobros.Find(id);
+                var cobro = Buscar(id);
 
-                if (cobros != null)
-                {
-                    contexto.Cobros.Remove(cobros);
-                    paso = contexto.SaveChanges() > 0;
-                }
+                contexto.Entry(cobro).State = EntityState.Deleted;
+                paso = (contexto.SaveChanges() > 0);
             }
             catch (Exception)
             {
@@ -139,25 +112,6 @@ namespace Parcial2_Ap2_Wilbert.BLL
             return lista;
         }
 
-        public static bool Existe(int id)
-        {
-            Contexto contexto = new Contexto();
-            bool encontrado = false;
-
-            try
-            {
-                encontrado = contexto.Cobros.Any(e => e.IdCobros == id);
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            finally
-            {
-                contexto.Dispose();
-            }
-
-            return encontrado;
-        }
+        
     }
 }

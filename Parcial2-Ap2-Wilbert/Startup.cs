@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Parcial2_Ap2_Wilbert.Data;
 
+
 namespace Parcial2_Ap2_Wilbert
 {
     public class Startup

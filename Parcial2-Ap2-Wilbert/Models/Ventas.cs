@@ -17,6 +17,6 @@ namespace Parcial2_Ap2_Wilbert.Models
         public double Balance { get; set; }
 
         [ForeignKey("VentaId")]
-        public virtual List<CobrosDetalle> Detalle { get; set; } = new List<CobrosDetalle>();
+        public virtual List<CobrosDetalle> cobrosDetalle { get; set; } = new List<CobrosDetalle>();
     }
 }

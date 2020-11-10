@@ -14,7 +14,7 @@ namespace Parcial2_Ap2_Wilbert.Models
         public int ClienteId { get; set; }
         public DateTime  Fecha { get; set; }
         public int Totales { get; set; }
-        public double CobradoTotal{ get; set; }
+        public double Cobro{ get; set; }
         public string Observaciones { get; set; }
 
         [ForeignKey("IdCobros")]

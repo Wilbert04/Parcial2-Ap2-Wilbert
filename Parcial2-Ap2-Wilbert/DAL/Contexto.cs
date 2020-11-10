@@ -15,7 +15,7 @@ namespace Parcial2_Ap2_Wilbert.DAL
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite(@"Data Source= DATA\CobrosDB.db");
+            optionsBuilder.UseSqlite(@"Data Source= Data\CobrosDB.db");
         }
 
 
