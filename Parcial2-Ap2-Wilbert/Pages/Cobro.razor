@@ -26,7 +26,7 @@
                         <div class="form-group">
                             <label> Cobro Id </label>
                             <div class="input-group">
-                                <InputNumber @bind-Value="cobro.IdCobro" class="form-control col-5" />
+                                <InputNumber @bind-Value="cobro.IdCobros" class="form-control col-5" />
                                 <div class="input-group-append">
                                     <button type="button" class="btn btn-primary input-group-text" @onclick="Buscar">Buscar</button>
                                 </div>
@@ -130,87 +130,91 @@
 
     Cobros cobro = new Cobros();
 
-    List<Clientes> ListClientes = new List<Clientes>();
-    List<CobrosDetalle> ListVentas = new List<CobrosDetalle>();
-
-    protected override void OnInitialized(){
-
-        Nuevo();
-    }
-
-    private void Nuevo(){
-
-        cobro = new Cobros();
-        ListClientes = ClientesBLL.GetList(c => true);
-        ListVentas = new List<CobrosDetalle>
+    List<Clientes>
+    ListClientes = new List<Clientes>();
+    List<CobrosDetalle>
+    ListVentas = new List<CobrosDetalle>
     ();
-    cobro.Fecha = DateTime.Now;
-    }
 
-    private void Guardar(){
+     protected override void OnInitialized(){
 
-    bool guardado;
+     Nuevo();
+     }
 
-    cobro.cobrosDetalle.RemoveAll(d => d.Cobrado == 0);
+     private void Nuevo(){
 
-    guardado = CobrosBLL.Guardar(cobro);
+     cobro = new Cobros();
+     ListClientes = ClientesBLL.GetList(c => true);
+     ListVentas = new List<CobrosDetalle>
+     ();
+     cobro.Fecha = DateTime.Now;
+     }
 
-    if (guardado){
+     private void Guardar(){
 
-    Toast.ShowSuccess("Se ha guardado exitosamente");
-    Nuevo();
-    }
-    else
-    Toast.ShowError("No se pudo guardar exitosamente");
+     bool guardado;
 
-    }
+     cobro.cobrosDetalle.RemoveAll(d => d.Cobrado == 0);
 
-    private async Task Buscar(){
+     guardado = CobrosBLL.Guardar(cobro);
 
-    var Cobro = CobrosBLL.Buscar(cobro.IdCobros);
+     if (guardado){
 
-    cobro.cobrosDetalle = await VentasBLL.GetVentasCobradas(cobro.ClienteId);
+     Toast.ShowSuccess("Se ha guardado exitosamente");
+     Nuevo();
+     }
+     else
+     Toast.ShowError("No se pudo guardar exitosamente");
 
-    if (cobro != null)
+     }
 
-    this.cobro = Cobro;
-    else
-    Toast.ShowError("Este cobro no existe");
-    }
+     private async Task Buscar(){
 
-    private void Eliminar(){
+     var Cobro = CobrosBLL.Buscar(cobro.IdCobros);
 
-    bool elimino;
+     cobro.cobrosDetalle = await VentasBLL.GetVentasCobradas(cobro.ClienteId);
 
-    elimino = CobrosBLL.Eliminar(cobro.IdCobros);
+     if (cobro != null)
 
-    if (elimino){
+     this.cobro = Cobro;
+     else
+     Toast.ShowError("Este cobro no existe");
+     }
 
-    Nuevo();
-    Toast.ShowSuccess("Eliminado exitosamente");
-    }
-    else
-    Toast.ShowError("No se pudo eliminar exitosamente");
-    }
+     private void Eliminar(){
 
-    private void Cobrar(CobrosDetalle cobroDetalle){
+     bool elimino;
 
-    if (cobroDetalle.Cobrado == 0){
+     elimino = CobrosBLL.Eliminar(cobro.IdCobros);
 
-    cobroDetalle.Cobrado = cobroDetalle.Venta.Balance;
-    cobro.Cobro += cobroDetalle.Cobrado;
-    }
-    else{
+     if (elimino){
 
-    cobroDetalle.Cobrado = 0;
-    cobro.Cobro -= cobroDetalle.Venta.Balance;
-    }
-    }
+     Nuevo();
+     Toast.ShowSuccess("Eliminado exitosamente");
+     }
+     else
+     Toast.ShowError("No se pudo eliminar exitosamente");
+     }
 
-    private async Task ObtenerVentasPendientes(){
+     private void Cobrar(CobrosDetalle cobroDetalle){
 
-    if(cobro.IdCobros == 0)
-    cobro.cobrosDetalle = await VentasBLL.GetVentasPendiente(cobro.ClienteId);
-    }
+     if (cobroDetalle.Cobrado == 0){
 
-    }
+     cobroDetalle.Cobrado = cobroDetalle.Venta.Balance;
+     cobro.Cobro += cobroDetalle.Cobrado;
+     }
+     else{
+
+     cobroDetalle.Cobrado = 0;
+     cobro.Cobro -= cobroDetalle.Venta.Balance;
+     }
+     }
+
+     private async Task ObtenerVentasPendientes(){
+
+     if(cobro.IdCobros == 0)
+     cobro.cobrosDetalle = await VentasBLL.GetVentasPendiente(cobro.ClienteId);
+     }
+
+}
+
