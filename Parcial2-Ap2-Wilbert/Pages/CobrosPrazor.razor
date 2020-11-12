@@ -1,5 +1,5 @@
-﻿@page "/Cobro"
-@page "/Cobro/{IdCobros:int}"
+﻿@page "/CobroP"
+@page "/CobroP/{IdCobros:int}"
 
 @using Parcial2_Ap2_Wilbert.BLL
 @using Parcial2_Ap2_Wilbert.Models
@@ -8,7 +8,6 @@
 @using Blazored.Toast.Services
 
 @inject IToastService Toast
-
 
 <EditForm Model="cobro" OnValidSubmit="Guardar">
     <DataAnnotationsValidator />
@@ -126,7 +125,9 @@
     </div>
 </EditForm>
 
+
 @code {
+
 
     Cobros cobro = new Cobros();
 
@@ -226,6 +227,4 @@
         if (cobro.IdCobros == 0)
             cobro.cobrosDetalle = await VentasBLL.GetVentasPendiente(cobro.ClienteId);
     }
-
 }
-
